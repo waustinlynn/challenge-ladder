@@ -1,0 +1,17 @@
+<mat-accordion>
+  <div *ngFor="let pos of data">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{pos.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="user != undefined; else nouser">
+        {{pos.homeCourt}}
+      </div>
+      <ng-template #nouser>
+        Login for contact info
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+</mat-accordion>
