@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { AuthService as OAuthService } from './auth.service';
+import { UserService } from './user.service';
 
 import {
   AuthService,
@@ -16,7 +17,19 @@ import {
 export class AppComponent {
   title = 'challenge-ladder';
   user: any;
-  constructor(private socialAuthService: AuthService, private oauth: OAuthService) { }
+  authenticated: boolean = false;
+  constructor(
+    private socialAuthService: AuthService,
+    private oauth: OAuthService,
+    private userService: UserService) { }
+
+  ngOnInit() {
+    this.userService.authenticated.subscribe(isValid => {
+      if (isValid) {
+        this.user = this.userService.user;
+      }
+    });
+  }
 
   public socialSignIn(socialPlatform: string) {
     let socialPlatformProvider;
@@ -29,15 +42,9 @@ export class AppComponent {
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
         this.user = userData;
-        console.log(socialPlatform + " sign in data : ", userData);
-        // Now sign-in with userData
-        // ...
-
+        this.userService.setUser(userData);
       }
     );
   }
 
-  // public socialSignIn(socialPlatform: string) {
-  //   this.oauth.login()
-  // }
 }

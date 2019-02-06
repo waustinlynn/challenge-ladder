@@ -2,10 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { AdminComponent } from './admin/admin.component';
 import { LadderListComponent } from './ladder-list/ladder-list.component';
 import { LadderService } from './ladder.service';
+import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material';
@@ -21,6 +24,11 @@ import {
   GoogleLoginProvider,
   // FacebookLoginProvider,
 } from "angular-6-social-login";
+
+const appRoutes: Routes = [
+  { path: 'admin', component: AdminComponent },
+  { path: '', component: LadderListComponent, pathMatch: 'full' }
+]
 
 // Configs 
 export function getAuthServiceConfigs() {
@@ -42,9 +50,11 @@ export function getAuthServiceConfigs() {
 @NgModule({
   declarations: [
     AppComponent,
-    LadderListComponent
+    LadderListComponent,
+    AdminComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     BrowserModule,
     BrowserAnimationsModule,
     MatExpansionModule,
@@ -61,7 +71,8 @@ export function getAuthServiceConfigs() {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
     },
-    AuthService
+    AuthService,
+    UserService
   ],
 
   bootstrap: [AppComponent]

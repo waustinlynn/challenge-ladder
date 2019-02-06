@@ -1,9 +1,11 @@
 <div class="mat-app-background">
+  <a mat-raised-button color="primary" routerLink="/">Home</a>
   <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
+  <span class="mat-body" *ngIf="(userService.authenticated | async)">&nbsp;Logged in as: {{user.name}}</span>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
+    <a mat-menu-item routerLink="/admin">Admin</a>
+    <button mat-menu-item *ngIf="!(userService.authenticated | async)" (click)="socialSignIn('google')">Google Sign In</button>
   </mat-menu>
-  <button (click)="socialSignIn('google')">Sign In</button>
-  <ladder-list [user]="user"></ladder-list>
+  <hr />
+  <router-outlet></router-outlet>
 </div>

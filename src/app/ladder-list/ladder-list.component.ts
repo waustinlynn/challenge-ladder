@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LadderService } from '../ladder.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'ladder-list',
@@ -7,16 +8,20 @@ import { LadderService } from '../ladder.service';
   styleUrls: ['./ladder-list.component.css']
 })
 export class LadderListComponent implements OnInit {
-  panelOpenState = false;
-  @Input() user: any;
-  constructor(private ladderService: LadderService) {
+  user: any;
+  data: any[];
 
+  constructor(private ladderService: LadderService, private userService: UserService) {
     this.data = ladderService.loadData();
   }
 
-  data: any[];
 
   ngOnInit() {
+    this.userService.authenticated.subscribe(isValid => {
+      if (isValid) {
+        this.user = this.userService.user;
+      }
+    })
   }
 
 }
