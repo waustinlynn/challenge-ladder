@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,6 +11,7 @@ import { LadderListComponent } from './ladder-list/ladder-list.component';
 import { LadderService } from './ladder.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
@@ -24,6 +26,7 @@ import {
   GoogleLoginProvider,
   // FacebookLoginProvider,
 } from "angular-6-social-login";
+import { UserFormComponent } from './user-form/user-form.component';
 
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent },
@@ -51,7 +54,8 @@ export function getAuthServiceConfigs() {
   declarations: [
     AppComponent,
     LadderListComponent,
-    AdminComponent
+    AdminComponent,
+    UserFormComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -64,6 +68,7 @@ export function getAuthServiceConfigs() {
     MatButtonModule,
     SocialLoginModule,
     HttpClientModule,
+    FormsModule,
     OAuthModule.forRoot()
   ],
   providers: [

@@ -1,0 +1,27 @@
+<p class="mat-title">{{title}}</p>
+<div class="example-container">
+  <mat-form-field>
+    <input matInput placeholder="First Name" [(ngModel)]="user.firstName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Last Name" [(ngModel)]="user.lastName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Phone Number" [(ngModel)]="user.phone">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Email Address" [(ngModel)]="user.email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Google Account (optional)" [(ngModel)]="user.googleUser">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Facebook Account (optional)" [(ngModel)]="user.fbUser">
+  </mat-form-field>
+</div>
+<button mat-raised-button color="primary" (click)="save()">Save</button>

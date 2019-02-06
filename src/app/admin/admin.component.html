@@ -1,3 +1,7 @@
-<p>
-  admin works!
-</p>
+<button mat-raised-button color="primary" (click)="addUser()">Add User</button>
+
+<app-user-form *ngIf="isAddingUser" (onUserSave)="saveUser($event)"></app-user-form>
+
+<div *ngIf="!isAddingUser">
+  <p>display list here</p>
+</div>

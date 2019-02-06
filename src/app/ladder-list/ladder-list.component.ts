@@ -13,6 +13,9 @@ export class LadderListComponent implements OnInit {
 
   constructor(private ladderService: LadderService, private userService: UserService) {
     this.data = ladderService.loadData();
+    this.data = this.data.map((el, idx) => {
+      return { ...el, position: idx + 1 };
+    })
   }
 
 

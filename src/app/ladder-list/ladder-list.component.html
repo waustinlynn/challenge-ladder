@@ -1,9 +1,10 @@
+<p class="mat-title">Current Rankings</p>
 <mat-accordion>
   <div *ngFor="let pos of data">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{pos.name}}
+          {{pos.position}}. {{pos.firstName}}&nbsp;{{pos.lastName}}&nbsp;&nbsp;({{pos.homeCourt}})
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div *ngIf="user != undefined; else nouser">
