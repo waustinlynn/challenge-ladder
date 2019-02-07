@@ -10,16 +10,14 @@ import { LadderService } from '../ladder.service';
 export class ScoreEntryComponent implements OnInit {
 
   players: any[];
-  playerNames: string[];
   score: string;
-  winner: string;
-  opponent: string;
+  winner: string = '';
+  opponent: string = '';
   constructor(private ladderService: LadderService) { }
 
   ngOnInit() {
-    this.players = this.ladderService.loadData();
-    this.playerNames = this.players.map(r => {
-      return `${r.firstName} ${r.lastName}`;
+    this.players = this.ladderService.loadData().map(r => {
+      return { label: `${r.firstName} ${r.lastName}`, value: r.id };
     });
   }
 
@@ -29,6 +27,7 @@ export class ScoreEntryComponent implements OnInit {
       winner: this.winner,
       opponent: this.opponent
     }
+    this.ladderService.updateRankings(this.winner, this.opponent);
     console.log(pl);
   }
 

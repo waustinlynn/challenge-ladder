@@ -12,10 +12,7 @@ export class LadderListComponent implements OnInit {
   data: any[];
 
   constructor(private ladderService: LadderService, private userService: UserService) {
-    this.data = ladderService.loadData();
-    this.data = this.data.map((el, idx) => {
-      return { ...el, position: idx + 1 };
-    })
+
   }
 
 
@@ -24,6 +21,12 @@ export class LadderListComponent implements OnInit {
       if (isValid) {
         this.user = this.userService.user;
       }
+    });
+
+    this.ladderService.rankings.subscribe(r => {
+      this.data = r.map((el, idx) => {
+        return { ...el, position: idx + 1 };
+      });
     })
   }
 
