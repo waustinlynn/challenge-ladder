@@ -5,6 +5,7 @@
   <div class="mat-body" *ngIf="(userService.authenticated | async)">&nbsp;Logged in as: {{user.name}}</div>
   <mat-menu #menu="matMenu">
     <a mat-menu-item routerLink="/admin">Admin</a>
+    <a mat-menu-item routerLink="/score">Score Entry</a>
     <button mat-menu-item *ngIf="!(userService.authenticated | async)" (click)="socialSignIn('google')">Google Sign In</button>
   </mat-menu>
   <hr />

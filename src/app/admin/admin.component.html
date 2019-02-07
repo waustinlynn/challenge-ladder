@@ -1,7 +1,23 @@
-<button mat-raised-button color="primary" (click)="addUser()">Add User</button>
+<button mat-raised-button color="primary" (click)="addUser()">Add Player</button>
 
 <app-user-form *ngIf="isAddingUser" (onUserSave)="saveUser($event)"></app-user-form>
 
 <div *ngIf="!isAddingUser">
-  <p>display list here</p>
+  <span *ngFor="let player of players">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>{{player.firstName}} {{player.lastName}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>Email: {{player.email}}</mat-list-item>
+          <mat-list-item>Phone: {{player.phone}}</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent">Edit</button>
+        <button mat-raised-button color="warn">Delete</button>
+      </mat-card-actions>
+    </mat-card>
+  </span>
 </div>

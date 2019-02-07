@@ -1,0 +1,17 @@
+<p class="mat-title">Enter Score</p>
+<div>
+  <mat-form-field>
+    <mat-select placeholder="Winner" [(value)]="winner">
+      <mat-option *ngFor="let player of playerNames" [value]="player">{{player}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Opponent" [(value)]="opponent">
+      <mat-option *ngFor="let player of playerNames" [value]="player">{{player}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Score (i.e. 6-2,6-3)" [(ngModel)]="score" />
+  </mat-form-field>
+</div>
+<button mat-raised-button color="primary" (click)="save()">Save</button>

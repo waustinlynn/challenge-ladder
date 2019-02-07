@@ -17,6 +17,9 @@ import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 import { OAuthModule } from 'angular-oauth2-oidc';
 
@@ -27,9 +30,11 @@ import {
   // FacebookLoginProvider,
 } from "angular-6-social-login";
 import { UserFormComponent } from './user-form/user-form.component';
+import { ScoreEntryComponent } from './score-entry/score-entry.component';
 
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent },
+  { path: 'score', component: ScoreEntryComponent },
   { path: '', component: LadderListComponent, pathMatch: 'full' }
 ]
 
@@ -55,7 +60,8 @@ export function getAuthServiceConfigs() {
     AppComponent,
     LadderListComponent,
     AdminComponent,
-    UserFormComponent
+    UserFormComponent,
+    ScoreEntryComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -69,6 +75,9 @@ export function getAuthServiceConfigs() {
     SocialLoginModule,
     HttpClientModule,
     FormsModule,
+    MatCardModule,
+    MatListModule,
+    MatSelectModule,
     OAuthModule.forRoot()
   ],
   providers: [
