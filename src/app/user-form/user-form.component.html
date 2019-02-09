@@ -1,7 +1,7 @@
 <p class="mat-title">{{title}}</p>
 <div class="container">
   <mat-form-field>
-    <input matInput placeholder="First Name" [(ngModel)]="user.firstName">
+    <input matInput placeholder="First Name" [ngClass]="{'required': !validateProperty(user.firstName)}" [(ngModel)]="user.firstName">
   </mat-form-field>
 
   <mat-form-field>

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import * as env from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class LadderService {
     { id: '3', firstName: 'nicole', lastName: 'Smith', homeCourt: 'Ashebrooke', email: 'test@test.com', phone: '555-555-5555' },
     { id: '4', firstName: 'william', lastName: 'Smith', homeCourt: 'Brookstone', email: 'test@test.com', phone: '555-555-5555' }
   ];
-  constructor() {
+  constructor(private http: HttpClient) {
     this._rankings = new BehaviorSubject(this.data);
   }
 
@@ -47,8 +49,15 @@ export class LadderService {
     top.push(winnerRecord);
     let newRankings = top.concat(mid);
     newRankings = newRankings.concat(bottom);
+    this._updateRankings(newRankings);
+  }
 
+  private _updateRankings(newRankings) {
     this.data = newRankings;
-    this._rankings.next(this.data)
+    console.log(newRankings);
+    this._rankings.next(newRankings);
+    // this.http.post(`${env.environment.apiUrl}docs`, newRankings).subscribe(r => {
+    //   this._rankings.next(newRankings);
+    // });
   }
 }

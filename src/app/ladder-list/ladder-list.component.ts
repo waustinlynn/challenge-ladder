@@ -30,4 +30,8 @@ export class LadderListComponent implements OnInit {
     })
   }
 
+  drop(event) {
+    console.log(event);
+  }
+
 }

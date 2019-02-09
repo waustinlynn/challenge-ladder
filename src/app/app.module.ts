@@ -21,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { OAuthModule } from 'angular-oauth2-oidc';
 
 import {
@@ -31,6 +33,7 @@ import {
 } from "angular-6-social-login";
 import { UserFormComponent } from './user-form/user-form.component';
 import { ScoreEntryComponent } from './score-entry/score-entry.component';
+import { EditPlayerComponent } from './edit-player/edit-player.component';
 
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent },
@@ -61,7 +64,8 @@ export function getAuthServiceConfigs() {
     LadderListComponent,
     AdminComponent,
     UserFormComponent,
-    ScoreEntryComponent
+    ScoreEntryComponent,
+    EditPlayerComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -78,6 +82,7 @@ export function getAuthServiceConfigs() {
     MatCardModule,
     MatListModule,
     MatSelectModule,
+    DragDropModule,
     OAuthModule.forRoot()
   ],
   providers: [

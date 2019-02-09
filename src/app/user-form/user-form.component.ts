@@ -21,4 +21,8 @@ export class UserFormComponent implements OnInit {
     this.onUserSave.emit(this.user);
   }
 
+  validateProperty(property: string) {
+    if (property == undefined || property == '') return false;
+  }
+
 }
