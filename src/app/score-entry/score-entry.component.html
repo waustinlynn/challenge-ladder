@@ -2,12 +2,12 @@
 <div>
   <mat-form-field>
     <mat-select placeholder="Winner" [(value)]="winner">
-      <mat-option *ngFor="let player of players" [value]="player.value">{{player.label}}</mat-option>
+      <mat-option *ngFor="let player of displayPlayers" [value]="player.value">{{player.label}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="Opponent" [(value)]="opponent">
-      <mat-option *ngFor="let player of players" [value]="player.value">{{player.label}}</mat-option>
+      <mat-option *ngFor="let player of displayPlayers" [value]="player.value">{{player.label}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>

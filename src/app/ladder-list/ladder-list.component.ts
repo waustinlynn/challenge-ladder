@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LadderService } from '../ladder.service';
+import { PlayerService } from '../player.service';
 import { UserService } from '../user.service';
+import * as helpers from '../helpers';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'ladder-list',
@@ -9,9 +12,13 @@ import { UserService } from '../user.service';
 })
 export class LadderListComponent implements OnInit {
   user: any;
-  data: any[];
+  rankings: any[];
+  displayRankings: any[];
+  players: any[];
 
-  constructor(private ladderService: LadderService, private userService: UserService) {
+  constructor(private ladderService: LadderService,
+    private userService: UserService,
+    private playerService: PlayerService) {
 
   }
 
@@ -23,15 +30,6 @@ export class LadderListComponent implements OnInit {
       }
     });
 
-    this.ladderService.rankings.subscribe(r => {
-      this.data = r.map((el, idx) => {
-        return { ...el, position: idx + 1 };
-      });
-    })
+    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => this.displayRankings = r);
   }
-
-  drop(event) {
-    console.log(event);
-  }
-
 }

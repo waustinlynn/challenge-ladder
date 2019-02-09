@@ -1,3 +1,7 @@
+mat-form-field {
+  margin: 4px;
+}
+
 .example-container {
     display: flex;
     flex-direction: column;
@@ -39,6 +43,7 @@
     cursor: move;
     background: white;
     font-size: 14px;
+    font-family: Roboto;
   }
   
   .cdk-drag-preview {
@@ -65,3 +70,11 @@
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
   
+  .display {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .item {
+    display: flex;
+  }

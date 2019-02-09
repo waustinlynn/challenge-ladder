@@ -14,18 +14,21 @@ export class AdminComponent implements OnInit {
 
   isAddingUser: boolean = false;
   players: any[];
+  editingPlayer: any = {};
   temp: any;
   showDetails: boolean = false;
+  detailsButtonLabel: string = 'Show Details';
 
   constructor(private ladderService: LadderService,
     private playerService: PlayerService,
     private router: Router) { }
 
   ngOnInit() {
-    this.playerService.getPlayers().subscribe(r => {
-      this.players = r as any[];
-    })
+    this.loadPlayers();
+  }
 
+  private loadPlayers() {
+    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => this.players = r);
   }
 
   addUser() {
@@ -35,22 +38,27 @@ export class AdminComponent implements OnInit {
   saveUser(event) {
     this.isAddingUser = false;
     console.log(event);
-    this.playerService.savePlayer(event).subscribe(r => console.log(r));
+    this.playerService.savePlayer(event).subscribe(r => this.loadPlayers());
   }
 
   editPlayer(player) {
-    this.playerService.markPlayerEdit(player);
-    this.router.navigate(['/admin']);
+    this.isAddingUser = true;
+    this.editingPlayer = player;
+  }
+
+  deletePlayer(player) {
+    // console.log(player);
+    this.playerService.deletePlayer(player.id).subscribe(r => this.loadPlayers());
   }
 
   drop(event) {
-    console.log(this.players);
     this.players = helpers.moveItemInArray(this.players, event.previousIndex, event.currentIndex);
-    console.log(this.players);
+    this.ladderService.saveRankings(this.players).subscribe(r => this.loadPlayers());
   }
 
   showHideDetails() {
     this.showDetails = !this.showDetails;
+    this.detailsButtonLabel = this.showDetails ? 'Hide Details' : 'Show Details';
   }
 
 }
