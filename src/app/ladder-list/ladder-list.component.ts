@@ -4,6 +4,7 @@ import { PlayerService } from '../player.service';
 import { UserService } from '../user.service';
 import * as helpers from '../helpers';
 import { combineLatest } from 'rxjs';
+import { ScoreService } from '../score.service';
 
 @Component({
   selector: 'ladder-list',
@@ -15,10 +16,12 @@ export class LadderListComponent implements OnInit {
   rankings: any[];
   displayRankings: any[];
   players: any[];
+  playerNameLookup: Map<string, string>;
 
   constructor(private ladderService: LadderService,
     private userService: UserService,
-    private playerService: PlayerService) {
+    private playerService: PlayerService,
+    private scoreService: ScoreService) {
 
   }
 
@@ -30,6 +33,19 @@ export class LadderListComponent implements OnInit {
       }
     });
 
-    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => this.displayRankings = r);
+    this.playerService.getPlayers().subscribe((players: any[]) => {
+
+    });
+
+
+    combineLatest(
+      helpers.getRankedUserList(this.playerService, this.ladderService),
+      this.scoreService.getScores(),
+      this.playerService.getPlayers()
+    ).subscribe(([rankedList, scores, players]) => {
+      this.displayRankings = rankedList as any[];
+      this.displayRankings = helpers.combineScoresWithDisplayRankings(this.displayRankings, scores as any[]);
+      console.log(this.displayRankings);
+    })
   }
 }

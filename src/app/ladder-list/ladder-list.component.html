@@ -8,7 +8,14 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div *ngIf="user != undefined; else nouser">
-        {{pos.homeCourt}}
+        <p>Email:
+          <a href="mailto:{{pos.email}}">{{pos.email}}</a>
+        </p>
+        <p>Phone: {{pos.phone}}</p>
+        <div class="mat-title">Score History</div>
+        <div *ngFor="let score of pos.scores">
+          <p class="mat-body">{{score.winnerName}} def. {{score.opponentName}}, {{score.score}}</p>
+        </div>
       </div>
       <ng-template #nouser>
         Login via the Menu to view contact information

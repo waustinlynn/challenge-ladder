@@ -46,7 +46,7 @@ export function combineRankingsWithPlayers(rankingsArr: any[], playersArr: any[]
     return returnArr;
 }
 
-export function getRankedUserList(playerService: PlayerService, ladderService: LadderService): Observable<any[]> {
+export function getRankedUserList(playerService: PlayerService, ladderService: LadderService) {
     return Observable.create((observer: Observer<any[]>) => {
         combineLatest(
             ladderService.getRankings(),
@@ -56,5 +56,26 @@ export function getRankedUserList(playerService: PlayerService, ladderService: L
             observer.next(displayRankings);
             observer.complete();
         });
-    })
+    });
+}
+
+export function combineScoresWithDisplayRankings(displayRankings: any[], scores: any[]): any[] {
+    let returnArr = [];
+    let playerMap = new Map<string, any>();
+    displayRankings.forEach(el => {
+        playerMap.set(el.id, { ...el, scores: [] });
+    });
+    scores.forEach(score => {
+        let winnerRecord = playerMap.get(score.winner);
+        let opponentRecord = playerMap.get(score.opponent);
+        if (winnerRecord != undefined) {
+            winnerRecord.scores.push(score);
+        }
+        if (opponentRecord != undefined) {
+            opponentRecord.scores.push(score);
+        }
+    });
+    return displayRankings.map(el => {
+        return playerMap.get(el.id);
+    });
 }

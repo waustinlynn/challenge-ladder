@@ -11,6 +11,7 @@ import { LadderListComponent } from './ladder-list/ladder-list.component';
 import { LadderService } from './ladder.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+import { ScoreService } from './score.service';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material';
@@ -91,7 +92,8 @@ export function getAuthServiceConfigs() {
       useFactory: getAuthServiceConfigs
     },
     AuthService,
-    UserService
+    UserService,
+    ScoreService
   ],
 
   bootstrap: [AppComponent]
