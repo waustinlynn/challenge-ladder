@@ -1,13 +1,17 @@
 <div class="mat-app-background">
-  <h1 class="mat-display-1">Fieldstone Junior Challenge Ladder</h1>
+  <h1 class="mat-display-1">PPT Junior Challenge Ladder</h1>
   <a mat-raised-button color="primary" routerLink="/">Home</a>
-  <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
-  <div class="mat-body" *ngIf="(userService.authenticated | async)">&nbsp;Logged in as: {{user.name}}</div>
+  <a mat-raised-button color="primary" *ngIf="user != undefined" routerLink="/admin">Admin</a>
+  <a mat-raised-button color="primary" routerLink="/score">Score Entry</a>
+  <app-idp-login *ngIf="user == undefined"></app-idp-login>
+  <div class="mat-body" *ngIf="user != undefined">&nbsp;Logged in as: {{user.name}}</div>
+  <!-- <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Menu</button>
+  
   <mat-menu #menu="matMenu">
     <a mat-menu-item routerLink="/admin">Admin</a>
     <a mat-menu-item routerLink="/score">Score Entry</a>
     <button mat-menu-item *ngIf="!(userService.authenticated | async)" (click)="socialSignIn('google')">Google Sign In</button>
-  </mat-menu>
+  </mat-menu> -->
   <hr />
   <router-outlet></router-outlet>
 </div>

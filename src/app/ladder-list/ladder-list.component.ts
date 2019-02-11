@@ -15,6 +15,7 @@ export class LadderListComponent implements OnInit {
   user: any;
   rankings: any[];
   displayRankings: any[];
+  isLoading: boolean = false;
   players: any[];
   playerNameLookup: Map<string, string>;
 
@@ -27,16 +28,12 @@ export class LadderListComponent implements OnInit {
 
 
   ngOnInit() {
+    this.isLoading = true;
     this.userService.authenticated.subscribe(isValid => {
       if (isValid) {
         this.user = this.userService.user;
       }
     });
-
-    this.playerService.getPlayers().subscribe((players: any[]) => {
-
-    });
-
 
     combineLatest(
       helpers.getRankedUserList(this.playerService, this.ladderService),
@@ -45,7 +42,7 @@ export class LadderListComponent implements OnInit {
     ).subscribe(([rankedList, scores, players]) => {
       this.displayRankings = rankedList as any[];
       this.displayRankings = helpers.combineScoresWithDisplayRankings(this.displayRankings, scores as any[]);
-      console.log(this.displayRankings);
+      this.isLoading = false;
     })
   }
 }

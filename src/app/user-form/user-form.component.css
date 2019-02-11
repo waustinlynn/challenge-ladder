@@ -1,3 +1,7 @@
 .required {
     border-color: red;
 }
+
+mat-form-field {
+    margin: 4px;
+}

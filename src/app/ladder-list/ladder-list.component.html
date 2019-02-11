@@ -1,5 +1,6 @@
 <p class="mat-title">Current Rankings</p>
-<mat-accordion>
+<p class="mat-body" *ngIf="isLoading">Loading...</p>
+<mat-accordion *ngIf="!isLoading">
   <div *ngFor="let pos of displayRankings">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -18,7 +19,7 @@
         </div>
       </div>
       <ng-template #nouser>
-        Login via the Menu to view contact information
+        <app-idp-login></app-idp-login>
       </ng-template>
     </mat-expansion-panel>
   </div>

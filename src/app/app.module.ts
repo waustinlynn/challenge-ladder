@@ -34,7 +34,7 @@ import {
 } from "angular-6-social-login";
 import { UserFormComponent } from './user-form/user-form.component';
 import { ScoreEntryComponent } from './score-entry/score-entry.component';
-import { EditPlayerComponent } from './edit-player/edit-player.component';
+import { IdpLoginComponent } from './idp-login/idp-login.component';
 
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent },
@@ -66,7 +66,7 @@ export function getAuthServiceConfigs() {
     AdminComponent,
     UserFormComponent,
     ScoreEntryComponent,
-    EditPlayerComponent
+    IdpLoginComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

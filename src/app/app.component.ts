@@ -21,7 +21,7 @@ export class AppComponent {
   constructor(
     private socialAuthService: AuthService,
     private oauth: OAuthService,
-    private userService: UserService) { }
+    public userService: UserService) { }
 
   ngOnInit() {
     this.userService.authenticated.subscribe(isValid => {
@@ -30,21 +30,4 @@ export class AppComponent {
       }
     });
   }
-
-  public socialSignIn(socialPlatform: string) {
-    let socialPlatformProvider;
-    if (socialPlatform == "facebook") {
-      socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
-    } else if (socialPlatform == "google") {
-      socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
-    }
-
-    this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => {
-        this.user = userData;
-        this.userService.setUser(userData);
-      }
-    );
-  }
-
 }
