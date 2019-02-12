@@ -1,0 +1,13 @@
+<p class="mat-title">Add Admin</p>
+<mat-form-field>
+  <input matInput placeholder="Google or FB Id" [(ngModel)]="newAdmin" />
+</mat-form-field>
+<button mat-raised-button (click)="save()">Save</button>
+<hr />
+<mat-list role="list">
+  <mat-list-item *ngFor="let admin of admins">
+    <mat-card>
+      <button mat-button color="warn" (click)="deleteAdmin(admin)">Delete</button> {{admin}}
+    </mat-card>
+  </mat-list-item>
+</mat-list>

@@ -14,6 +14,7 @@ export class UserService {
     this._user = user;
     if (this._user != undefined) {
       this._authenticated.next(true);
+      console.log(user);
     }
   }
 

@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:53655/api/'
+  apiUrl: 'http://localhost:53655/api/',
+  fbId: '298258437527731',
+  googleId: '46706216165-vsio8k4d16i3svrpd537raqbgqe6p0tc.apps.googleusercontent.com'
 };
 
 /*

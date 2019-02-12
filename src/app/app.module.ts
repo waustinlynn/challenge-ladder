@@ -12,6 +12,9 @@ import { LadderService } from './ladder.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { ScoreService } from './score.service';
+import { AdminService } from './admin.service';
+
+import { AdminGuard } from './admin.guard';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material';
@@ -26,33 +29,37 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { OAuthModule } from 'angular-oauth2-oidc';
 
+import * as env from '../environments/environment';
+
 import {
   SocialLoginModule,
   AuthServiceConfig,
   GoogleLoginProvider,
-  // FacebookLoginProvider,
+  FacebookLoginProvider,
 } from "angular-6-social-login";
 import { UserFormComponent } from './user-form/user-form.component';
 import { ScoreEntryComponent } from './score-entry/score-entry.component';
 import { IdpLoginComponent } from './idp-login/idp-login.component';
+import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 
 const appRoutes: Routes = [
-  { path: 'admin', component: AdminComponent },
+  { path: '', component: LadderListComponent, pathMatch: 'full' },
   { path: 'score', component: ScoreEntryComponent },
-  { path: '', component: LadderListComponent, pathMatch: 'full' }
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
+  { path: 'admins', component: ManageAdminsComponent, canActivate: [AdminGuard] },
 ]
 
 // Configs 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig(
     [
-      // {
-      //   id: FacebookLoginProvider.PROVIDER_ID,
-      //   provider: new FacebookLoginProvider("Your-Facebook-app-id")
-      // },
+      {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider(env.environment.fbId)
+      },
       {
         id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider("46706216165-vsio8k4d16i3svrpd537raqbgqe6p0tc.apps.googleusercontent.com")
+        provider: new GoogleLoginProvider(env.environment.googleId)
       }
     ]
   );
@@ -66,7 +73,8 @@ export function getAuthServiceConfigs() {
     AdminComponent,
     UserFormComponent,
     ScoreEntryComponent,
-    IdpLoginComponent
+    IdpLoginComponent,
+    ManageAdminsComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -93,7 +101,8 @@ export function getAuthServiceConfigs() {
     },
     AuthService,
     UserService,
-    ScoreService
+    ScoreService,
+    AdminService
   ],
 
   bootstrap: [AppComponent]
