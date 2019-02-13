@@ -12,9 +12,7 @@ import { PlayerService } from '../player.service';
 })
 export class AdminComponent implements OnInit {
 
-  isAddingUser: boolean = false;
   players: any[];
-  editingPlayer: any = {};
   temp: any;
   showDetails: boolean = false;
   detailsButtonLabel: string = 'Show Details';
@@ -31,19 +29,9 @@ export class AdminComponent implements OnInit {
     helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => this.players = r);
   }
 
-  addUser() {
-    this.isAddingUser = true;
-  }
-
-  saveUser(event) {
-    this.isAddingUser = false;
-    console.log(event);
-    this.playerService.savePlayer(event).subscribe(r => this.loadPlayers());
-  }
-
   editPlayer(player) {
-    this.isAddingUser = true;
-    this.editingPlayer = player;
+    this.playerService.markUserForEdit(player);
+    this.router.navigate(['/player']);
   }
 
   deletePlayer(player) {
@@ -55,10 +43,4 @@ export class AdminComponent implements OnInit {
     this.players = helpers.moveItemInArray(this.players, event.previousIndex, event.currentIndex);
     this.ladderService.saveRankings(this.players).subscribe(r => this.loadPlayers());
   }
-
-  showHideDetails() {
-    this.showDetails = !this.showDetails;
-    this.detailsButtonLabel = this.showDetails ? 'Hide Details' : 'Show Details';
-  }
-
 }

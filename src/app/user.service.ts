@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
 
   private _user: any;
+  private _associatedPlayer: any;
   private _authenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor() { }
 
@@ -14,8 +15,21 @@ export class UserService {
     this._user = user;
     if (this._user != undefined) {
       this._authenticated.next(true);
-      console.log(user);
     }
+  }
+
+  setAssociatedPlayer(player) {
+    this._associatedPlayer = player;
+  }
+
+  isMyPlayer(player) {
+    if (this._associatedPlayer == undefined) return false;
+    console.log(this._associatedPlayer);
+    return this._associatedPlayer.id == player.id;
+  }
+
+  get myPlayer() {
+    return this._associatedPlayer;
   }
 
   get user() {

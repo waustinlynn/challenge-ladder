@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PlayerService {
+  private _userForEdit: any;
+
   constructor(private http: HttpClient) { }
 
   getPlayers() {
@@ -22,5 +24,13 @@ export class PlayerService {
   deletePlayer(id) {
     console.log(id);
     return this.http.delete(`${env.environment.apiUrl}doc/${DocTypes.PLAYER}/${id}`);
+  }
+
+  markUserForEdit(user){
+    this._userForEdit = user;
+  }
+
+  get getEditUser(){
+    return this._userForEdit;
   }
 }

@@ -15,6 +15,7 @@ import { ScoreService } from './score.service';
 import { AdminService } from './admin.service';
 
 import { AdminGuard } from './admin.guard';
+import {AuthGuard} from './auth.guard';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material';
@@ -44,9 +45,10 @@ import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 
 const appRoutes: Routes = [
   { path: '', component: LadderListComponent, pathMatch: 'full' },
-  { path: 'score', component: ScoreEntryComponent },
+  { path: 'score', component: ScoreEntryComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
   { path: 'admins', component: ManageAdminsComponent, canActivate: [AdminGuard] },
+  { path: 'player', component: UserFormComponent, canActivate: [AdminGuard] },
 ]
 
 // Configs 

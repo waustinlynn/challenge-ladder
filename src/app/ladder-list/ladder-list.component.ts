@@ -32,6 +32,7 @@ export class LadderListComponent implements OnInit {
     this.userService.authenticated.subscribe(isValid => {
       if (isValid) {
         this.user = this.userService.user;
+        this.checkSetMyPlayer();
       }
     });
 
@@ -42,7 +43,28 @@ export class LadderListComponent implements OnInit {
     ).subscribe(([rankedList, scores, players]) => {
       this.displayRankings = rankedList as any[];
       this.displayRankings = helpers.combineScoresWithDisplayRankings(this.displayRankings, scores as any[]);
+      this.checkSetMyPlayer();
       this.isLoading = false;
     })
+  }
+
+  private checkSetMyPlayer() {
+    if (this.user == undefined) return;
+    if (this.displayRankings == undefined || this.displayRankings.length == 0) return;
+    setTimeout(() => {
+      this._setMyPlayer();
+      setTimeout(() => {
+        this._setMyPlayer();
+      }, 1000);
+    }, 100);
+  }
+
+  private _setMyPlayer() {
+    this.displayRankings = this.displayRankings.map(el => {
+      if (this.userService.isMyPlayer(el)) {
+        return { ...el, myPlayer: true };
+      }
+      return el;
+    });
   }
 }

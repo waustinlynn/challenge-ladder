@@ -19,6 +19,7 @@ export class AppComponent {
   title = 'challenge-ladder';
   user: any;
   authenticated: boolean = false;
+  isAdmin: boolean = false;
   constructor(
     private socialAuthService: AuthService,
     private oauth: OAuthService,
@@ -27,18 +28,11 @@ export class AppComponent {
 
   ngOnInit() {
     this.userService.authenticated.subscribe(isValid => {
+      this.authenticated = isValid;
       if (isValid) {
         this.user = this.userService.user;
+        this.adminService.isAdmin(this.user.email).subscribe(r => this.isAdmin = r);
       }
     });
-  }
-
-  isAdmin(user) {
-    if (user != undefined) {
-      if (user.email != undefined) {
-        return this.adminService.isAdmin(user.email);
-      }
-    }
-    return false;
   }
 }

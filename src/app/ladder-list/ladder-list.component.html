@@ -1,8 +1,8 @@
-<p class="mat-title">Current Rankings</p>
+<p class="mat-title">Current Ladder</p>
 <p class="mat-body" *ngIf="isLoading">Loading...</p>
 <mat-accordion *ngIf="!isLoading">
   <div *ngFor="let pos of displayRankings">
-    <mat-expansion-panel>
+    <mat-expansion-panel [ngClass]="{'my-player': pos.myPlayer}">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{pos.position}}. {{pos.firstName}}&nbsp;{{pos.lastName}}&nbsp;&nbsp;({{pos.homeCourt}})

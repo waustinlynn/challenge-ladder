@@ -1,21 +1,16 @@
-<button mat-raised-button color="primary" (click)="addUser()">Add Player</button>
-
-<app-user-form *ngIf="isAddingUser" [user]="editingPlayer" (onUserSave)="saveUser($event)"></app-user-form>
-
-<div *ngIf="!isAddingUser">
-  <div class="mat-title">Drag to reorder rankings</div>
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let player of players" cdkDrag>
-      <div class="mat-body display">
-        <span class="item">
-          {{player.firstName}} {{player.lastName}}</span>&nbsp;
-        <span class="item">
-          <button mat-raised-button color="warn" (click)="editPlayer(player)">Edit</button>
-        </span>
-        <span class="item">
-          <button mat-raised-button color="accent" (click)="deletePlayer(player)">Delete</button>
-        </span>
-      </div>
+<div class="mat-title">
+  Drag to reorder rankings</div>
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div class="example-box" *ngFor="let player of players" cdkDrag>
+    <div class="mat-body display">
+      <span class="item">
+        {{player.position}}. {{player.firstName}} {{player.lastName}}</span>&nbsp;
+      <span class="item">
+        <button mat-raised-button color="warn" (click)="editPlayer(player)">Edit</button>
+      </span>
+      <span class="item">
+        <button mat-raised-button color="accent" (click)="deletePlayer(player)">Delete</button>
+      </span>
     </div>
   </div>
 </div>

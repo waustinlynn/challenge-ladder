@@ -32,6 +32,7 @@ export class LadderService {
   }
 
   public updateRankings(winnerId: string, loserId: string, data: any[]) {
+    console.log(data);
     return Observable.create((observer: Observer<any[]>) => {
 
       let winnerIndex = 0;

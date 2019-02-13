@@ -42,7 +42,10 @@ export function combineRankingsWithPlayers(rankingsArr: any[], playersArr: any[]
         playerMap.delete(el.id);
         return pl;
     });
-    returnArr = returnArr.concat(Array.from(playerMap.values()));
+    let lastRank = returnArr.length;
+    returnArr = returnArr.concat(Array.from(playerMap.values()).map((el, idx) => {
+        return { ...el, position: lastRank + idx + 1 }
+    }));
     return returnArr;
 }
 

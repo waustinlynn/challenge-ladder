@@ -6,6 +6,7 @@ import { LadderService } from '../ladder.service';
 import { PlayerService } from '../player.service';
 import { combineLatest } from 'rxjs';
 import { ScoreService } from '../score.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-score-entry',
@@ -18,17 +19,37 @@ export class ScoreEntryComponent implements OnInit {
   score: string;
   winner: string = '';
   opponent: string = '';
+  error: string;
   playerNameLookup: Map<string, string>;
   constructor(private playerService: PlayerService,
+    private userService: UserService,
     private ladderService: LadderService,
     private scoreService: ScoreService,
     private router: Router) { }
 
   ngOnInit() {
     helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => {
+
       this.playerNameLookup = new Map<string, string>();
       this.players = r as any[];
-      this.displayPlayers = this.players.map(r => {
+
+      //find out the index for this user's player so we can trim the available list
+      let myPlayersIndex = -1;
+      this.players.forEach((el, idx) => {
+        if (this.userService.isMyPlayer(el)) {
+          myPlayersIndex = idx;
+        }
+      });
+
+      let availablePlayers = [];
+      let bottomIdx = myPlayersIndex - 4;
+      bottomIdx = bottomIdx < 0 ? 0 : bottomIdx;
+      let topIdx = myPlayersIndex + 5;
+      topIdx = topIdx > this.players.length ? this.players.length : topIdx;
+      availablePlayers = this.players.slice(bottomIdx, topIdx);
+
+
+      this.displayPlayers = availablePlayers.map(r => {
         let label = `${r.firstName} ${r.lastName}`;
         let value = r.id;
         this.playerNameLookup.set(value, label);
@@ -38,6 +59,12 @@ export class ScoreEntryComponent implements OnInit {
   }
 
   save() {
+    // if (this.userService.myPlayer.id != this.winner && this.userService.myPlayer.id != this.opponent) {
+    //   this.error = 'One player must be associated with your account to enter this score';
+    //   return;
+    // } else {
+    //   this.error = undefined;
+    // }
     let pl = {
       score: this.score,
       winner: this.winner,
@@ -45,10 +72,16 @@ export class ScoreEntryComponent implements OnInit {
       opponentName: this.playerNameLookup.get(this.opponent),
       opponent: this.opponent
     }
-    combineLatest(
-      this.ladderService.updateRankings(this.winner, this.opponent, this.players),
-      this.scoreService.saveScore(pl)
-    ).subscribe(([ladder, score]) => this.router.navigate(['/']));
+    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(players => {
+      combineLatest(
+        this.ladderService.updateRankings(this.winner, this.opponent, players),
+        this.scoreService.saveScore(pl)
+      ).subscribe(([ladder, score]) => {
+        console.log('in sub sub');
+        this.router.navigate(['/']);
+      });
+    });
+
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as env from '../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { DocTypes } from './constants';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { DocTypes } from './constants';
 })
 export class AdminService {
   admins: string[];
+  checkedUser: string;
   apiUrl = env.environment.apiUrl;
   constructor(private http: HttpClient) {
     this.getAdmins().subscribe(r => this.admins = r.admins);
@@ -26,8 +27,35 @@ export class AdminService {
     return this.http.post(`${env.environment.apiUrl}docs`, pl);
   }
 
-  isAdmin(email) {
-    if (this.admins.indexOf(email) > -1) return true;
-    return false;
+  isAdmin(email, retries = 0) {
+    if(this.admins == undefined){
+      if(retries < 5){
+        retries++;
+        return this.isAdmin(email, retries);
+      }
+      return Observable.create((obs: Observer<boolean>) => {
+        obs.next(false);
+        obs.complete();
+      })
+    }
+    return this._isAdminObs(email);
+  }
+
+  private _isAdminObs(email){
+    return Observable.create((obs: Observer<boolean>) => {
+      if(this.checkedUser != undefined){
+        obs.next(this.checkedUser == email);
+        obs.complete();
+        return;
+      }
+      this.checkedUser = email;
+      if (this.admins.indexOf(email) > -1){
+        obs.next(true);
+        obs.complete();
+        return;
+      }
+      obs.next(false);
+      obs.complete();
+    });
   }
 }
