@@ -59,12 +59,12 @@ export class ScoreEntryComponent implements OnInit {
   }
 
   save() {
-    // if (this.userService.myPlayer.id != this.winner && this.userService.myPlayer.id != this.opponent) {
-    //   this.error = 'One player must be associated with your account to enter this score';
-    //   return;
-    // } else {
-    //   this.error = undefined;
-    // }
+    if (!this.userService.isMyPlayer({ id: this.winner }) || !this.userService.isMyPlayer({ id: this.opponent })) {
+      this.error = 'One player must be associated with your account to enter this score';
+      return;
+    } else {
+      this.error = undefined;
+    }
     let pl = {
       score: this.score,
       winner: this.winner,
@@ -73,12 +73,20 @@ export class ScoreEntryComponent implements OnInit {
       opponent: this.opponent
     }
     helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(players => {
-      combineLatest(
-        this.ladderService.updateRankings(this.winner, this.opponent, players),
-        this.scoreService.saveScore(pl)
-      ).subscribe(([ladder, score]) => {
-        console.log('in sub sub');
-        this.router.navigate(['/']);
+      let rankingsDone = false;
+      let scoreDone = false;
+      function isDone() {
+        if (rankingsDone && scoreDone) {
+          this.router.navigate(['/']);
+        }
+      }
+      this.ladderService.updateRankings(this.winner, this.opponent, players).subscribe(r => {
+        rankingsDone = true;
+        isDone();
+      });
+      this.scoreService.saveScore(pl).subscribe(r => {
+        scoreDone = true;
+        isDone();
       });
     });
 

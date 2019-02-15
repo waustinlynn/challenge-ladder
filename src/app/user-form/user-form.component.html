@@ -21,11 +21,14 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Google Account (optional)" [(ngModel)]="user.googleUser">
+    <input matInput placeholder="New Facebook/Google Id" [(ngModel)]="linkedAccount">
   </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Facebook Account (optional)" [(ngModel)]="user.fbUser">
-  </mat-form-field>
+  <button mat-button color="primary" (click)="addAccount()">Add Account</button>
+  <p class="mat-body">Current Linked Accounts</p>
+  <div *ngFor="let account of user.accounts">
+    <mat-card>
+      <button mat-raised-button color="warn" (click)="deleteAccount(account)">Delete</button>&nbsp;{{account}}</mat-card>
+  </div>
 </div>
 <button mat-raised-button color="primary" (click)="save()">Save</button>

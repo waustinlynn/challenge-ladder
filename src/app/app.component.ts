@@ -23,15 +23,14 @@ export class AppComponent {
   constructor(
     private socialAuthService: AuthService,
     private oauth: OAuthService,
-    public userService: UserService,
-    private adminService: AdminService) { }
+    public userService: UserService) { }
 
   ngOnInit() {
     this.userService.authenticated.subscribe(isValid => {
-      this.authenticated = isValid;
       if (isValid) {
+        this.authenticated = this.userService.hasPlayer;
         this.user = this.userService.user;
-        this.adminService.isAdmin(this.user.email).subscribe(r => this.isAdmin = r);
+        this.isAdmin = this.userService.isAdmin;
       }
     });
   }
