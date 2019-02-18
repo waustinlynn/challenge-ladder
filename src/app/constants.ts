@@ -4,3 +4,8 @@ export class DocTypes {
     static SCORE = 'score';
     static ADMIN = 'admin';
 }
+
+export class AuthProviders {
+    static GOOGLE = 'google';
+    static FACEBOOK = 'facebook';
+}

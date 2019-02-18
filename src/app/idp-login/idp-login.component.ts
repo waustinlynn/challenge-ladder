@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
+import * as constants from '../constants';
 
 import {
   AuthService,
@@ -27,13 +28,15 @@ export class IdpLoginComponent implements OnInit {
     this.socialAuthService.authState.subscribe(r => {
       if (r == undefined || r == null) return;
       if (r.provider = 'google') {
+        if (this.googleUser != undefined) return;
         this.googleUser = r;
-        this.loadUser(this.googleUser);
+        this.loadUser(this.googleUser, constants.AuthProviders.GOOGLE);
       }
 
       if (r.provider == 'facebook') {
+        if (this.fbUser != undefined) return;
         this.fbUser = r;
-        this.loadUser(this.fbUser);
+        this.loadUser(this.fbUser, constants.AuthProviders.FACEBOOK);
       }
     });
   }
@@ -48,20 +51,20 @@ export class IdpLoginComponent implements OnInit {
 
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        this.loadUser(userData);
+        this.loadUser(userData, socialPlatform);
       }
     );
   }
 
-  private loadUser(userData) {
+  private loadUser(userData, provider) {
     this.user = userData;
     let localIsAdmin = false;
     let localUserData = undefined;
     if (this.user == undefined || this.user.email == undefined || this.user.email == '') return;
-    this.userService.setUser(userData);
+    this.userService.setUser(userData, provider);
     this.adminService.isAdmin(this.user.email).subscribe(isAdmin => {
       localIsAdmin = isAdmin;
-      this.userService.setUser(this.user, isAdmin);
+      this.userService.setUser(this.user, provider, isAdmin);
     });
     this.playerService.getPlayers().subscribe(players => {
       players.forEach(player => {

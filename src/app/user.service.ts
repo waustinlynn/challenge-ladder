@@ -9,6 +9,7 @@ export class UserService {
   private _user: any;
   private _isAdmin: boolean = false;
   private _associatedPlayer: any;
+  private _oauthUsers: Map<string, any>;
   private _associatedPlayers: Map<string, any>;
   private _authenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _userPermissions: UserPermissions;
@@ -16,6 +17,7 @@ export class UserService {
   private _isReadonly: boolean = true;
   constructor() {
     this._associatedPlayers = new Map<string, any>();
+    this._oauthUsers = new Map<string, any>();
     this._userPermissions = new UserPermissions();
     this._permissions = new BehaviorSubject(this._userPermissions);
   }
@@ -31,9 +33,12 @@ export class UserService {
     this._permissions.next(this._userPermissions);
   }
 
-  public setUser(user: any, isAdmin: boolean = false) {
+  public setUser(user: any, provider: string, isAdmin: boolean = false) {
     this._user = user;
-    this._isAdmin = isAdmin;
+    this._oauthUsers.set(provider, user);
+    if (!this._isAdmin) {
+      this._isAdmin = isAdmin;
+    }
     if (this._user != undefined) {
       this._authenticated.next(true);
       let updateObj = {
