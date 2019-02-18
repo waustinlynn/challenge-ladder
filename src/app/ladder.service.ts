@@ -16,8 +16,14 @@ export class LadderService {
   public getRankings() {
     return Observable.create((obs: Observer<any>) => {
       this.http.get(`${env.environment.apiUrl}doc/${DocTypes.RANKINGS}`).subscribe((r: any) => {
-        obs.next(r.rankings);
-        obs.complete();
+        if (r != undefined && r.rankings != undefined) {
+          obs.next(r.rankings);
+          obs.complete();
+        } else {
+          obs.next([]);
+          obs.complete();
+        }
+
       });
     });
   }
@@ -32,7 +38,6 @@ export class LadderService {
   }
 
   public updateRankings(winnerId: string, loserId: string, data: any[]) {
-    console.log(data);
     return Observable.create((observer: Observer<any[]>) => {
 
       let winnerIndex = 0;

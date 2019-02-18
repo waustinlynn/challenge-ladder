@@ -20,6 +20,7 @@ export class ScoreEntryComponent implements OnInit {
   winner: string = '';
   opponent: string = '';
   error: string;
+  showAllPlayers: boolean = false;
   playerNameLookup: Map<string, string>;
   constructor(private playerService: PlayerService,
     private userService: UserService,
@@ -28,10 +29,24 @@ export class ScoreEntryComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => {
 
-      this.playerNameLookup = new Map<string, string>();
-      this.players = r as any[];
+    helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(r => {
+      this.players = r;
+      this.refrehPlayerList();
+    });
+
+    this.userService.permissions.subscribe(r => {
+      this.showAllPlayers = r.admin;
+      this.refrehPlayerList();
+    });
+  }
+
+  refrehPlayerList() {
+    if (this.players == undefined || this.players.length == 0) return;
+    this.playerNameLookup = new Map<string, string>();
+    let availablePlayers = this.players;
+
+    if (!this.showAllPlayers) {
 
       //find out the index for this user's player so we can trim the available list
       let myPlayersIndex = -1;
@@ -41,25 +56,23 @@ export class ScoreEntryComponent implements OnInit {
         }
       });
 
-      let availablePlayers = [];
       let bottomIdx = myPlayersIndex - 4;
       bottomIdx = bottomIdx < 0 ? 0 : bottomIdx;
       let topIdx = myPlayersIndex + 5;
       topIdx = topIdx > this.players.length ? this.players.length : topIdx;
       availablePlayers = this.players.slice(bottomIdx, topIdx);
+    }
 
-
-      this.displayPlayers = availablePlayers.map(r => {
-        let label = `${r.firstName} ${r.lastName}`;
-        let value = r.id;
-        this.playerNameLookup.set(value, label);
-        return { label, value };
-      });
+    this.displayPlayers = availablePlayers.map(r => {
+      let label = `${r.firstName} ${r.lastName}`;
+      let value = r.id;
+      this.playerNameLookup.set(value, label);
+      return { label, value };
     });
   }
 
   save() {
-    if (!this.userService.isMyPlayer({ id: this.winner }) || !this.userService.isMyPlayer({ id: this.opponent })) {
+    if (!this.userService.isAdmin && (!this.userService.isMyPlayer({ id: this.winner }) || !this.userService.isMyPlayer({ id: this.opponent }))) {
       this.error = 'One player must be associated with your account to enter this score';
       return;
     } else {
@@ -75,9 +88,10 @@ export class ScoreEntryComponent implements OnInit {
     helpers.getRankedUserList(this.playerService, this.ladderService).subscribe(players => {
       let rankingsDone = false;
       let scoreDone = false;
+      let router = this.router;
       function isDone() {
         if (rankingsDone && scoreDone) {
-          this.router.navigate(['/']);
+          router.navigate(['/']);
         }
       }
       this.ladderService.updateRankings(this.winner, this.opponent, players).subscribe(r => {

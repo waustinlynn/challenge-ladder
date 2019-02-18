@@ -42,6 +42,7 @@ import { UserFormComponent } from './user-form/user-form.component';
 import { ScoreEntryComponent } from './score-entry/score-entry.component';
 import { IdpLoginComponent } from './idp-login/idp-login.component';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
+import { RulesComponent } from './rules/rules.component';
 
 const appRoutes: Routes = [
   { path: '', component: LadderListComponent, pathMatch: 'full' },
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
   { path: 'admins', component: ManageAdminsComponent, canActivate: [AdminGuard] },
   { path: 'player', component: UserFormComponent, canActivate: [AdminGuard] },
   { path: 'player/new', component: UserFormComponent, canActivate: [AdminGuard] },
+  { path: 'rules', component: RulesComponent},
 ]
 
 // Configs 
@@ -77,7 +79,8 @@ export function getAuthServiceConfigs() {
     UserFormComponent,
     ScoreEntryComponent,
     IdpLoginComponent,
-    ManageAdminsComponent
+    ManageAdminsComponent,
+    RulesComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

@@ -45,7 +45,10 @@ export class UserFormComponent implements OnInit {
   addAccount() {
     if (this.linkedAccount == undefined || this.linkedAccount == '') return;
     this.user.accounts.push(this.linkedAccount);
-    this.playerService.savePlayer(this.user).subscribe(r => r);
+    this.linkedAccount = undefined;
+    if (this.user.id != undefined) {
+      this.playerService.savePlayer(this.user).subscribe(r => r);
+    }
   }
 
   save() {

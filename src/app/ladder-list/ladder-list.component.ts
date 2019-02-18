@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LadderService } from '../ladder.service';
 import { PlayerService } from '../player.service';
-import { UserService } from '../user.service';
+import { UserService, UserPermissions } from '../user.service';
 import * as helpers from '../helpers';
 import { combineLatest } from 'rxjs';
 import { ScoreService } from '../score.service';
@@ -13,11 +13,14 @@ import { ScoreService } from '../score.service';
 })
 export class LadderListComponent implements OnInit {
   user: any;
+  userPermissions: UserPermissions;
+
   rankings: any[];
   displayRankings: any[];
   isLoading: boolean = false;
   players: any[];
   playerNameLookup: Map<string, string>;
+  isReadonly: boolean;
 
   constructor(private ladderService: LadderService,
     private userService: UserService,
@@ -34,6 +37,10 @@ export class LadderListComponent implements OnInit {
         this.user = this.userService.user;
         this.checkSetMyPlayer();
       }
+    });
+
+    this.userService.permissions.subscribe(permissions => {
+      this.userPermissions = permissions;
     });
 
     combineLatest(

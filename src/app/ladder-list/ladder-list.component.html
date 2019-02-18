@@ -8,7 +8,7 @@
           {{pos.position}}. {{pos.firstName}}&nbsp;{{pos.lastName}}&nbsp;&nbsp;({{pos.homeCourt}})
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div *ngIf="user != undefined; else nouser">
+      <div *ngIf="userPermissions.authenticated && !userPermissions.isReadonly; else nouser">
         <p>Email:
           <a href="mailto:{{pos.email}}">{{pos.email}}</a>
         </p>
@@ -19,7 +19,12 @@
         </div>
       </div>
       <ng-template #nouser>
-        <app-idp-login></app-idp-login>
+        <div *ngIf="userPermissions.isReadonly; else showLogin">
+          <p class="mat-body">Register your Google/Facebook account with your player to view contact information and post scores. </p>
+        </div>
+        <ng-template #showLogin>
+          <app-idp-login></app-idp-login>
+        </ng-template>
       </ng-template>
     </mat-expansion-panel>
   </div>

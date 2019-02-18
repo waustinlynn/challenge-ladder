@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,24 @@ export class UserService {
   private _associatedPlayer: any;
   private _associatedPlayers: Map<string, any>;
   private _authenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _userPermissions: UserPermissions;
+  private _permissions: BehaviorSubject<UserPermissions>;
+  private _isReadonly: boolean = true;
   constructor() {
     this._associatedPlayers = new Map<string, any>();
+    this._userPermissions = new UserPermissions();
+    this._permissions = new BehaviorSubject(this._userPermissions);
+  }
+
+  get permissions() {
+    return this._permissions;
+  }
+
+  private updatePermissions(update: UserPermissions) {
+    for (let prop in update) {
+      this._userPermissions[prop] = update[prop];
+    }
+    this._permissions.next(this._userPermissions);
   }
 
   public setUser(user: any, isAdmin: boolean = false) {
@@ -20,11 +36,23 @@ export class UserService {
     this._isAdmin = isAdmin;
     if (this._user != undefined) {
       this._authenticated.next(true);
+      let updateObj = {
+        authenticated: true
+      } as UserPermissions;
+      if (this._isAdmin) {
+        updateObj.admin = true;
+        updateObj.isReadonly = false;
+      }
+      if (!this.hasPlayer && !this._isAdmin) {
+        updateObj.isReadonly = true;
+      }
+      this.updatePermissions(updateObj);
     }
   }
 
   setAssociatedPlayer(player) {
     this._associatedPlayers.set(player.id, player);
+    this.updatePermissions({ isReadonly: false } as UserPermissions);
   }
 
   isMyPlayer(player) {
@@ -50,4 +78,14 @@ export class UserService {
   get authenticated(): BehaviorSubject<boolean> {
     return this._authenticated;
   }
+
+  get isReadonly(): boolean {
+    return this._isReadonly;
+  }
+}
+
+export class UserPermissions {
+  authenticated: boolean = false;
+  admin: boolean = false;
+  isReadonly: boolean = false;
 }

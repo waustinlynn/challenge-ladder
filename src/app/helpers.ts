@@ -31,10 +31,12 @@ export function combineRankingsWithPlayers(rankingsArr: any[], playersArr: any[]
     let playerMap = new Map<string, any>();
     playersArr.forEach(el => playerMap.set(el.id, el));
 
-    function filter(el) {
-        let found = playerMap.has(el.id);
-        return found;
-    }
+    // let aFilter = (el) => playerMap.has(el.id);
+    let filter = (el) => playerMap.has(el.id);
+    // function filter(el) {
+    //     let found = playerMap.has(el.id);
+    //     return found;
+    // }
 
     let returnArr = rankingsArr.filter(filter).map((el, idx) => {
         let player = playerMap.get(el.id);

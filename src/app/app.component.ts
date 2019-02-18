@@ -20,6 +20,7 @@ export class AppComponent {
   user: any;
   authenticated: boolean = false;
   isAdmin: boolean = false;
+  isReadonly: boolean = false;
   constructor(
     private socialAuthService: AuthService,
     private oauth: OAuthService,
@@ -31,6 +32,7 @@ export class AppComponent {
         this.authenticated = this.userService.hasPlayer;
         this.user = this.userService.user;
         this.isAdmin = this.userService.isAdmin;
+        this.isReadonly = !this.isAdmin && !this.authenticated;
       }
     });
   }

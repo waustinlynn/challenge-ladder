@@ -1,0 +1,17 @@
+.mat-body 
+.mat-body-strong {
+    font-size: 20px !important;
+}
+
+div {
+    font-size: 20px;
+}
+
+.mat-body-strong {
+    font-weight: 700;
+    padding: 8px;
+}
+
+.mat-body {
+    padding: 8px;
+}

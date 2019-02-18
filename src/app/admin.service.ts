@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as env from '../environments/environment';
 import { Observable, Observer } from 'rxjs';
 import { DocTypes } from './constants';
+import { unsupported } from '@angular/compiler/src/render3/view/util';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,11 @@ export class AdminService {
   checkedUser: string;
   apiUrl = env.environment.apiUrl;
   constructor(private http: HttpClient) {
-    this.getAdmins().subscribe(r => this.admins = r.admins);
+    this.getAdmins().subscribe(r => {
+      if (r != undefined && r.admins != undefined) {
+        this.admins = r.admins;
+      }
+    });
   }
 
   getAdmins() {
@@ -28,8 +33,8 @@ export class AdminService {
   }
 
   isAdmin(email, retries = 0) {
-    if(this.admins == undefined){
-      if(retries < 5){
+    if (this.admins == undefined) {
+      if (retries < 5) {
         retries++;
         return this.isAdmin(email, retries);
       }
@@ -41,15 +46,15 @@ export class AdminService {
     return this._isAdminObs(email);
   }
 
-  private _isAdminObs(email){
+  private _isAdminObs(email) {
     return Observable.create((obs: Observer<boolean>) => {
-      if(this.checkedUser != undefined){
+      if (this.checkedUser != undefined) {
         obs.next(this.checkedUser == email);
         obs.complete();
         return;
       }
       this.checkedUser = email;
-      if (this.admins.indexOf(email) > -1){
+      if (this.admins.indexOf(email) > -1) {
         obs.next(true);
         obs.complete();
         return;

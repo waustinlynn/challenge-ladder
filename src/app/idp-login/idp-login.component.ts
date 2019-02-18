@@ -16,12 +16,26 @@ import { AdminService } from '../admin.service';
 })
 export class IdpLoginComponent implements OnInit {
   user: any;
+  googleUser: any;
+  fbUser: any;
   constructor(private socialAuthService: AuthService,
     public userService: UserService,
     private playerService: PlayerService,
     private adminService: AdminService) { }
 
   ngOnInit() {
+    this.socialAuthService.authState.subscribe(r => {
+      if (r == undefined || r == null) return;
+      if (r.provider = 'google') {
+        this.googleUser = r;
+        this.loadUser(this.googleUser);
+      }
+
+      if (r.provider == 'facebook') {
+        this.fbUser = r;
+        this.loadUser(this.fbUser);
+      }
+    });
   }
 
   public socialSignIn(socialPlatform: string) {
@@ -34,29 +48,32 @@ export class IdpLoginComponent implements OnInit {
 
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        this.user = userData;
-        let localIsAdmin = false;
-        let localUserData = undefined;
-        if (this.user == undefined || this.user.email == undefined || this.user.email == '') return;
-        this.userService.setUser(userData);
-        this.adminService.isAdmin(this.user.email).subscribe(isAdmin => {
-          localIsAdmin = isAdmin;
-          this.userService.setUser(this.user, isAdmin);
-        });
-        this.playerService.getPlayers().subscribe(players => {
-          players.forEach(player => {
-            let userEmail = this.user.email;
-            if (player.accounts == undefined) return;
-            player.accounts.forEach(account => {
-              if (this.lowerLogin(account) == userEmail) {
-                this.userService.setAssociatedPlayer(player);
-              }
-            })
-          });
-        });
-
+        this.loadUser(userData);
       }
     );
+  }
+
+  private loadUser(userData) {
+    this.user = userData;
+    let localIsAdmin = false;
+    let localUserData = undefined;
+    if (this.user == undefined || this.user.email == undefined || this.user.email == '') return;
+    this.userService.setUser(userData);
+    this.adminService.isAdmin(this.user.email).subscribe(isAdmin => {
+      localIsAdmin = isAdmin;
+      this.userService.setUser(this.user, isAdmin);
+    });
+    this.playerService.getPlayers().subscribe(players => {
+      players.forEach(player => {
+        let userEmail = this.user.email;
+        if (player.accounts == undefined) return;
+        player.accounts.forEach(account => {
+          if (this.lowerLogin(account) == userEmail) {
+            this.userService.setAssociatedPlayer(player);
+          }
+        })
+      });
+    });
   }
 
   private lowerLogin(login) {
