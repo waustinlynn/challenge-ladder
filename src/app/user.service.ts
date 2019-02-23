@@ -58,6 +58,7 @@ export class UserService {
   setAssociatedPlayer(player) {
     this._associatedPlayers.set(player.id, player);
     this.updatePermissions({ isReadonly: false } as UserPermissions);
+    this._hasPlayerObs.next(this.hasPlayer);
   }
 
   isMyPlayer(player) {
@@ -69,7 +70,12 @@ export class UserService {
   }
 
   get hasPlayer() {
-    return this._associatedPlayer != undefined;
+    return (this._associatedPlayers != undefined && this._associatedPlayers.size > 0);
+  }
+
+  private _hasPlayerObs: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  get hasPlayerObs() {
+    return this._hasPlayerObs;
   }
 
   get myPlayer() {

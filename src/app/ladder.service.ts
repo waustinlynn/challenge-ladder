@@ -51,7 +51,11 @@ export class LadderService {
           loserIndex = idx;
         }
       });
-      if (loserIndex > winnerIndex) return;
+      if (loserIndex > winnerIndex) {
+        observer.next(data);
+        observer.complete();
+        return;
+      }
       let newRankings = helpers.moveItemInArray(data, winnerIndex, loserIndex);
       this._updateRankings(newRankings).subscribe(r => {
         observer.next(newRankings);

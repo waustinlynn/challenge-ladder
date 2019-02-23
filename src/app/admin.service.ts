@@ -48,19 +48,21 @@ export class AdminService {
 
   private _isAdminObs(email) {
     return Observable.create((obs: Observer<boolean>) => {
-      if (this.checkedUser != undefined) {
-        obs.next(this.checkedUser == email);
+      // obs.next(true);
+      // return;
+      if (this.checkedUser != undefined && this.checkedUser == email) {
+        obs.next(this._isAdmin(this.checkedUser));
         obs.complete();
         return;
       }
       this.checkedUser = email;
-      if (this.admins.indexOf(email) > -1) {
-        obs.next(true);
-        obs.complete();
-        return;
-      }
-      obs.next(false);
+      obs.next(this._isAdmin(this.checkedUser));
       obs.complete();
     });
+  }
+
+  private _isAdmin(account) {
+    if (this.admins == undefined || this.admins.length == 0) return false;
+    return this.admins.indexOf(account) > -1;
   }
 }

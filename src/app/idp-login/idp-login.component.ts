@@ -9,6 +9,7 @@ import {
 } from 'angular-6-social-login';
 import { PlayerService } from '../player.service';
 import { AdminService } from '../admin.service';
+import { LoginOptions } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-idp-login',
@@ -69,9 +70,13 @@ export class IdpLoginComponent implements OnInit {
     this.playerService.getPlayers().subscribe(players => {
       players.forEach(player => {
         let userEmail = this.user.email;
+        let userName = this.user.name;
         if (player.accounts == undefined) return;
         player.accounts.forEach(account => {
-          if (this.lowerLogin(account) == userEmail) {
+          let lowerLogin = this.lowerLogin(account);
+          let lowerEmail = this.lowerLogin(userEmail);
+          let lowerUsername = this.lowerLogin(userName);
+          if (lowerLogin == lowerEmail || lowerLogin == lowerUsername) {
             this.userService.setAssociatedPlayer(player);
           }
         })

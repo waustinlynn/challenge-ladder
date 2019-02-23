@@ -49,30 +49,40 @@ export class ScoreEntryComponent implements OnInit {
     if (!this.showAllPlayers) {
 
       //find out the index for this user's player so we can trim the available list
-      let myPlayersIndex = -1;
       this.players.forEach((el, idx) => {
         if (this.userService.isMyPlayer(el)) {
-          myPlayersIndex = idx;
+          this.bindPlayerListToLookup(this.getPlayerSlice(idx, 5));
         }
       });
-
-      let bottomIdx = myPlayersIndex - 4;
-      bottomIdx = bottomIdx < 0 ? 0 : bottomIdx;
-      let topIdx = myPlayersIndex + 5;
-      topIdx = topIdx > this.players.length ? this.players.length : topIdx;
-      availablePlayers = this.players.slice(bottomIdx, topIdx);
+    } else {
+      this.bindPlayerListToLookup(this.players);
     }
 
-    this.displayPlayers = availablePlayers.map(r => {
-      let label = `${r.firstName} ${r.lastName}`;
-      let value = r.id;
-      this.playerNameLookup.set(value, label);
-      return { label, value };
+    this.displayPlayers = [];
+    this.playerNameLookup.forEach((label, value) => {
+      this.displayPlayers.push({ label, value });
+
     });
   }
 
+  private bindPlayerListToLookup(playerList: any[]) {
+    playerList.forEach(player => {
+      let label = `${player.firstName} ${player.lastName}`;
+      let value = player.id;
+      this.playerNameLookup.set(value, label);
+    });
+  }
+
+  private getPlayerSlice(index: number, offset: number) {
+    let bottom = index - offset;
+    bottom = bottom < 0 ? 0 : bottom;
+    let top = index + offset + 1;
+    top = top > this.players.length ? this.players.length : top;
+    return this.players.slice(bottom, top);
+  }
+
   save() {
-    if (!this.userService.isAdmin && (!this.userService.isMyPlayer({ id: this.winner }) || !this.userService.isMyPlayer({ id: this.opponent }))) {
+    if (!this.userService.isAdmin && (!this.userService.isMyPlayer({ id: this.winner }) && !this.userService.isMyPlayer({ id: this.opponent }))) {
       this.error = 'One player must be associated with your account to enter this score';
       return;
     } else {

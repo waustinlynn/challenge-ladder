@@ -29,11 +29,29 @@ export class AppComponent {
   ngOnInit() {
     this.userService.authenticated.subscribe(isValid => {
       if (isValid) {
-        this.authenticated = this.userService.hasPlayer;
         this.user = this.userService.user;
         this.isAdmin = this.userService.isAdmin;
-        this.isReadonly = !this.isAdmin && !this.authenticated;
+        this.checkReadonly();
       }
     });
+
+    this.userService.hasPlayerObs.subscribe(hasPlayer => {
+      this.authenticated = hasPlayer;
+      this.checkReadonly();
+    });
+  }
+
+  private checkReadonly() {
+    if (this.user != undefined && !this.authenticated && !this.isAdmin) {
+      this.isReadonly = true;
+    } else {
+      this.isReadonly = false;
+    }
+  }
+
+  private status() {
+    console.log('admin', this.isAdmin);
+    console.log('authenticated', this.authenticated);
+    console.log('readonly', this.isReadonly);
   }
 }
