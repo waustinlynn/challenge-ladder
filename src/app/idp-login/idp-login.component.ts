@@ -87,7 +87,7 @@ export class IdpLoginComponent implements OnInit {
   private lowerLogin(login) {
     if (login == undefined) return undefined;
     if (typeof (login) == 'string') {
-      return login.toLowerCase();
+      return login.toLowerCase().trim();
     }
     return undefined;
   }
