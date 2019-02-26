@@ -65,4 +65,9 @@ export class AdminService {
     if (this.admins == undefined || this.admins.length == 0) return false;
     return this.admins.indexOf(account) > -1;
   }
+
+  saveLogin(user) {
+    let pl = { ...user, docType: DocTypes.LOGIN }
+    return this.http.post(`${env.environment.apiUrl}docs`, pl);
+  }
 }

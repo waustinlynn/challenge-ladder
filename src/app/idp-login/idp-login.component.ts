@@ -26,20 +26,20 @@ export class IdpLoginComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit() {
-    this.socialAuthService.authState.subscribe(r => {
-      if (r == undefined || r == null) return;
-      if (r.provider = 'google') {
-        if (this.googleUser != undefined) return;
-        this.googleUser = r;
-        this.loadUser(this.googleUser, constants.AuthProviders.GOOGLE);
-      }
+    // this.socialAuthService.authState.subscribe(r => {
+    //   if (r == undefined || r == null) return;
+    //   if (r.provider = 'google') {
+    //     if (this.googleUser != undefined) return;
+    //     this.googleUser = r;
+    //     this.loadUser(this.googleUser, constants.AuthProviders.GOOGLE);
+    //   }
 
-      if (r.provider == 'facebook') {
-        if (this.fbUser != undefined) return;
-        this.fbUser = r;
-        this.loadUser(this.fbUser, constants.AuthProviders.FACEBOOK);
-      }
-    });
+    //   if (r.provider == 'facebook') {
+    //     if (this.fbUser != undefined) return;
+    //     this.fbUser = r;
+    //     this.loadUser(this.fbUser, constants.AuthProviders.FACEBOOK);
+    //   }
+    // });
   }
 
   public socialSignIn(socialPlatform: string) {
@@ -53,6 +53,7 @@ export class IdpLoginComponent implements OnInit {
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
         this.loadUser(userData, socialPlatform);
+        this.adminService.saveLogin(userData).subscribe(r => r);
       }
     );
   }

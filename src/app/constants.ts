@@ -3,6 +3,7 @@ export class DocTypes {
     static RANKINGS = 'rankings';
     static SCORE = 'score';
     static ADMIN = 'admin';
+    static LOGIN = 'login';
 }
 
 export class AuthProviders {
