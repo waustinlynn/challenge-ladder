@@ -1,0 +1,36 @@
+<!-- <mat-list role="list">
+  <mat-list-item *ngFor="let score of recentScores">Winner: {{score.winner}}&nbsp;&nbsp;Opponent: {{score.opponent}}&nbsp;&nbsp;Score: {{score.score}}&nbsp;&nbsp;Played On:
+    {{score.datePlayed}}</mat-list-item>
+</mat-list> -->
+<table mat-table [dataSource]="recentScores" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="winner">
+    <th mat-header-cell *matHeaderCellDef> Winner </th>
+    <td mat-cell *matCellDef="let element"> {{element.winner}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="opponent">
+    <th mat-header-cell *matHeaderCellDef> Opponent </th>
+    <td mat-cell *matCellDef="let element"> {{element.opponent}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="score">
+    <th mat-header-cell *matHeaderCellDef> Score </th>
+    <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="datePlayed">
+    <th mat-header-cell *matHeaderCellDef> Played On </th>
+    <td mat-cell *matCellDef="let element"> {{element.datePlayed}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

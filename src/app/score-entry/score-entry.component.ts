@@ -7,6 +7,7 @@ import { PlayerService } from '../player.service';
 import { combineLatest } from 'rxjs';
 import { ScoreService } from '../score.service';
 import { UserService } from '../user.service';
+import { StateService } from '../state.service';
 
 @Component({
   selector: 'app-score-entry',
@@ -26,6 +27,7 @@ export class ScoreEntryComponent implements OnInit {
     private userService: UserService,
     private ladderService: LadderService,
     private scoreService: ScoreService,
+    private stateService: StateService,
     private router: Router) { }
 
   ngOnInit() {
@@ -99,8 +101,10 @@ export class ScoreEntryComponent implements OnInit {
       let rankingsDone = false;
       let scoreDone = false;
       let router = this.router;
+      let that = this;
       function isDone() {
         if (rankingsDone && scoreDone) {
+          that.stateService.triggerReload();
           router.navigate(['/']);
         }
       }

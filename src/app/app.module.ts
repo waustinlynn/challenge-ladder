@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { ScoreService } from './score.service';
 import { AdminService } from './admin.service';
+import { StateService } from './state.service';
 
 import { AdminGuard } from './admin.guard';
 import { AuthGuard } from './auth.guard';
@@ -25,6 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -44,6 +46,7 @@ import { IdpLoginComponent } from './idp-login/idp-login.component';
 import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { RulesComponent } from './rules/rules.component';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { ScoreListComponent } from './score-list/score-list.component';
 
 const appRoutes: Routes = [
   { path: '', component: LadderListComponent, pathMatch: 'full' },
@@ -52,6 +55,7 @@ const appRoutes: Routes = [
   { path: 'admins', component: ManageAdminsComponent, canActivate: [AdminGuard] },
   { path: 'player', component: UserFormComponent, canActivate: [AdminGuard] },
   { path: 'player/new', component: UserFormComponent, canActivate: [AdminGuard] },
+  { path: 'scores', component: ScoreListComponent, canActivate: [AuthGuard] },
   { path: 'rules', component: RulesComponent },
   { path: 'privacy', component: PrivacyComponent }
 ]
@@ -83,7 +87,8 @@ export function getAuthServiceConfigs() {
     IdpLoginComponent,
     ManageAdminsComponent,
     RulesComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    ScoreListComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -101,6 +106,7 @@ export function getAuthServiceConfigs() {
     MatListModule,
     MatSelectModule,
     DragDropModule,
+    MatTableModule,
     OAuthModule.forRoot()
   ],
   providers: [
@@ -111,7 +117,8 @@ export function getAuthServiceConfigs() {
     AuthService,
     UserService,
     ScoreService,
-    AdminService
+    AdminService,
+    StateService
   ],
 
   bootstrap: [AppComponent]

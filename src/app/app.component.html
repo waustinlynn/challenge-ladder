@@ -3,6 +3,7 @@
   <a mat-raised-button color="primary" routerLink="/">Home</a>
   <a mat-raised-button color="primary" routerLink="/rules">Rules</a>
   <a mat-raised-button color="primary" *ngIf="authenticated || isAdmin" routerLink="/score">Score Entry</a>
+  <a mat-raised-button color="primary" *ngIf="authenticated || isAdmin" routerLink="/scores">Recent Scores</a>
 
   <app-idp-login *ngIf="!authenticated && !isAdmin && !isReadonly"></app-idp-login>
 
