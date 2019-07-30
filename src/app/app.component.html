@@ -1,5 +1,5 @@
 <div class="mat-app-background">
-  <h1 class="mat-display-1">PPT Junior Challenge Ladder</h1>
+  <!-- <h1 class="mat-display-1">PPT Junior Challenge Ladder</h1>
   <a mat-raised-button color="primary" routerLink="/">Home</a>
   <a mat-raised-button color="primary" routerLink="/rules">Rules</a>
   <a mat-raised-button color="primary" *ngIf="authenticated || isAdmin" routerLink="/score">Score Entry</a>
@@ -16,6 +16,7 @@
     </mat-menu>
   </span>
   <div class="mat-body" *ngIf="user != undefined">&nbsp;Logged in as: {{user.name}}</div>
-  <hr />
+  <hr /> -->
+  <app-header></app-header>
   <router-outlet></router-outlet>
 </div>

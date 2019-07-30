@@ -47,9 +47,10 @@ import { ManageAdminsComponent } from './manage-admins/manage-admins.component';
 import { RulesComponent } from './rules/rules.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { ScoreListComponent } from './score-list/score-list.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 const appRoutes: Routes = [
-  { path: '', component: LadderListComponent, pathMatch: 'full' },
   { path: 'score', component: ScoreEntryComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
   { path: 'admins', component: ManageAdminsComponent, canActivate: [AdminGuard] },
@@ -57,7 +58,9 @@ const appRoutes: Routes = [
   { path: 'player/new', component: UserFormComponent, canActivate: [AdminGuard] },
   { path: 'scores', component: ScoreListComponent, canActivate: [AuthGuard] },
   { path: 'rules', component: RulesComponent },
-  { path: 'privacy', component: PrivacyComponent }
+  { path: 'privacy', component: PrivacyComponent },
+  // { path: '', component: LadderListComponent, pathMatch: 'full' }
+  { path: '', component: HomeComponent, pathMatch: 'full' }
 ]
 
 // Configs 
@@ -88,7 +91,9 @@ export function getAuthServiceConfigs() {
     ManageAdminsComponent,
     RulesComponent,
     PrivacyComponent,
-    ScoreListComponent
+    ScoreListComponent,
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
